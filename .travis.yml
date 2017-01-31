@@ -8,6 +8,7 @@ services:
   - docker
 
 before_install:
+  - sudo /sbin/sysctl -w vm.max_map_count=262144
   - docker pull atzedevries/api-builder
   - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:5.1.2 elasticsearch -Ecluster.name="nba-cluster" -Enetwork.host="_site_"
   - mkdir payload
