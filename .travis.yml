@@ -1,0 +1,16 @@
+language: shell
+
+branch:
+
+services:
+  - docker
+
+before_install:
+  - docker pull atzedevries/api-builder
+  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:5.1.2 elasticsearch -Ecluster.name='nba-cluster'
+  - mkdir payload
+
+before_script:
+  - sleep 10
+
+script: docker run --rm -v $(pwd)/payload:/payload -e B=$TRAVIS_BRANCH -e GITHUB_USER=$GITHUB_USER -e GITHUB_PASSWORD=$GITHUB_PASSWORD --link es:es atzedevries/api-builder /build-nba-service.sh $B install-service
