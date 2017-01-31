@@ -15,4 +15,4 @@ before_install:
 before_script:
   - sleep 10
 
-script: docker run --rm -v $(pwd)/payload:/payload -e GITHUB_USER=$GITHUB_USER -e GITHUB_PASSWORD=$GITHUB_PASSWORD --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-service
+script: docker run --rm -v $(pwd)/payload:/payload -e GITHUB_USER=${GITHUB_USER} -e GITHUB_PASSWORD=${GITHUB_PASSWORD} --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-service
