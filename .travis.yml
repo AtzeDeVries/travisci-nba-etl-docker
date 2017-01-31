@@ -9,12 +9,13 @@ services:
 
 before_install:
   - docker pull atzedevries/api-builder
-  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:5.1.2 elasticsearch -Ecluster.name='nba-cluster' -Enetwork.host='_site_'
+  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:5.1.2 elasticsearch -Ecluster.name="nba-cluster" -Enetwork.host="_site_"
   - mkdir payload
   - echo GITHUB_USER=$GITHUB_USER > env.file
   - echo GITHUB_PASS=$GITHUB_PASS >> env.file
 
 before_script:
   - sleep 10
+  - docker logs es
 
 script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-service
