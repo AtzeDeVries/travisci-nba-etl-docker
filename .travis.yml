@@ -1,9 +1,5 @@
 language: shell
 
-branch:
-  except:
-    - master
-
 services:
   - docker
 
@@ -38,3 +34,4 @@ after_success:
   - git add *
   - git commit -a -m 'automatich travis ci build'
   - git push -u origin $DOCKER_TAG
+  #- curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "staging"}' -X POST https://registry.hub.docker.com/u/atzedevries/docker-nba-api/trigger/4e4fb6e4-a1c4-45ad-a076-16b38bc2b6b1/
