@@ -10,7 +10,7 @@ services:
 before_install:
   - sudo /sbin/sysctl -w vm.max_map_count=262144
   - docker pull atzedevries/api-builder
-  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:2.3.5 elasticsearch -Descluster.name="nba-cluster"
+  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:2.3.5 elasticsearch:2.3.5 elasticsearch -Des.cluster.name="nba-cluster" -Des.index.number_of_replicas=0
   - mkdir payload
   - echo GITHUB_USER=$GITHUB_USER > ~/env.file
   - echo GITHUB_PASS=$GITHUB_PASS >> ~/env.file
@@ -26,6 +26,7 @@ before_install:
 before_script:
   - sleep 10
   - docker logs es
+  - docker exec es curl localhost:9200
 
 script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh V2_master install-service
 
