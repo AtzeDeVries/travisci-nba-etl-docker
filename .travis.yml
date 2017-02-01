@@ -3,6 +3,9 @@ language: shell
 services:
   - docker
 
+env:
+  - LASTEST=6d70aff55661c81a537a49e749b85dbde7c6705b
+
 before_install:
   - sudo /sbin/sysctl -w vm.max_map_count=262144
   - docker pull atzedevries/api-builder
@@ -15,7 +18,7 @@ before_install:
   - echo "\t password $GITHUB_PASS" >> ~/.netrc
   - git clone https://github.com/naturalis/naturalis_data_api
   - cd naturalis_data_api
-  - git checkout $TRAVIS_BRANCH
+  - git checkout $LATEST
   - export DOCKER_TAG=$(git describe)
 
 before_script:
@@ -24,13 +27,12 @@ before_script:
   - docker exec es curl localhost:9200
   - cd ~
 
-script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh 6d70aff55661c81a537a49e749b85dbde7c6705b install-service
+script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh $LATEST install-service
 
 after_success:
   - git clone https://github.com/AtzeDeVries/docker-nba-api
   - cd docker-nba-api
-  - git checkout -b $DOCKER_TAG
   - cp -fr ~/payload/* ./
   - git add *
   - git commit -a -m 'automatich travis ci build'
-  - git push -u origin $DOCKER_TAG
+  - git push
