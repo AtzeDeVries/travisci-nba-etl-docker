@@ -10,7 +10,7 @@ services:
 before_install:
   - sudo /sbin/sysctl -w vm.max_map_count=262144
   - docker pull atzedevries/api-builder
-  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:5.1.2 elasticsearch -Ecluster.name="nba-cluster" -Enetwork.host="_site_"
+  - docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" elasticsearch:2.3.5 elasticsearch -Descluster.name="nba-cluster" -Enetwork.host="_site_"
   - mkdir payload
   - echo GITHUB_USER=$GITHUB_USER > env.file
   - echo GITHUB_PASS=$GITHUB_PASS >> env.file
