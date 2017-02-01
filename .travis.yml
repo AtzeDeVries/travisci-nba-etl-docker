@@ -35,5 +35,6 @@ after_success:
   - cd docker-nba-api
   - git checkout -b $DOCKER_TAG
   - cp -fr ~/payload/* ./
+  - git add *
   - git commit -a -m 'automatich travis ci build'
   - git push -u origin $DOCKER_TAG
