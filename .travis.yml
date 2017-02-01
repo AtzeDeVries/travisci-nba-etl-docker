@@ -34,7 +34,7 @@ after_success:
   - git add *
   - git commit -a -m 'automatich travis ci build'
   - git push -u origin $DOCKER_TAG
-  - docker build -t atzedevries/docker-nba-api:$DOCKER_TAG
+  - docker build -t atzedevries/docker-nba-api:$DOCKER_TAG ./
   - docker login -u atzedevries -p $DOCKER_PASS
   - docker tag atzedevries/docker-nba-api:$DOCKER_TAG atzedevries/docker-nba-api:$DOCKER_TAG
   - docker push atzedevries/docker-nba-api:$DOCKER_TAG
