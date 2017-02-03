@@ -4,7 +4,7 @@ services:
   - docker
 
 env:
-  - LASTEST=6d70aff55661c81a537a49e749b85dbde7c6705b
+  - LASTEST=a6d70be1758c0bb6a55ffb7e9e37f6c7b8f1a035
 
 before_install:
   - cd ~
@@ -35,5 +35,8 @@ after_success:
   - cd docker-nba-api
   - cp -fr ~/payload/* ./
   - git add *
-  - git commit -a -m 'automatich travis ci build'
-  - git push
+  - git commit -a -m ' master/latest automatich travis ci build'
+  - docker build -t atzedevries/docker-nba-api:latest ./
+  - docker login -u atzedevries -p $DOCKER_PASS
+  - docker tag atzedevries/docker-nba-api:latest atzedevries/docker-nba-api:latest
+  - docker push atzedevries/docker-nba-api:latest
