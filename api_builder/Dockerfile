@@ -15,4 +15,5 @@ RUN mkdir /payload && \
 ADD build-nba-service.sh /build-nba-service.sh
 RUN chmod +x /build-nba-service.sh
 ADD build.v2.properties /build.v2.properties
-ENTRYPOINT /build-nba-service.sh
+WORKDIR /
+CMD /build-nba-service.sh
