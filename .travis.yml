@@ -4,7 +4,7 @@ services:
   - docker
 
 env:
-  - LASTEST=a6d70be1758c0bb6a55ffb7e9e37f6c7b8f1a035
+  - LATEST=a6d70be1758c0bb6a55ffb7e9e37f6c7b8f1a035
 
 before_install:
   - export PWD=$(pwd)
