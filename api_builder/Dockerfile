@@ -13,5 +13,6 @@ RUN mkdir /payload && \
     mkdir /source
 #ADD prepare-git.sh /prepare-git.sh
 ADD build-nba-service.sh /build-nba-service.sh
+RUN chmod +x /build-nba-service.sh
 ADD build.v2.properties /build.v2.properties
 ENTRYPOINT /build-nba-service.sh
