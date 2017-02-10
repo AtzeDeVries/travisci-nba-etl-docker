@@ -16,7 +16,7 @@ before_install:
   - echo "\t password $GITHUB_PASS" >> ~/.netrc
   - git clone https://github.com/naturalis/naturalis_data_api
   - cd naturalis_data_api
-  - git checkout es5
+  - git checkout $TRAVIS_BRANCH
   - export DOCKER_TAG=$(git describe)
 
 before_script:
@@ -25,7 +25,7 @@ before_script:
   - docker exec es curl localhost:9200
   - cd ~
 
-script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-etl-module
+script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder /build-nba-service.sh install-etl-module
 
 after_success:
   - git clone https://github.com/AtzeDeVries/docker-nba-etl
