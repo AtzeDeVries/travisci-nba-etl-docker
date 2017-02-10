@@ -20,7 +20,7 @@ before_install:
   - git clone https://github.com/naturalis/naturalis_data_api
   - cd naturalis_data_api
   - git checkout $LATEST
-  - export DOCKER_TAG=$(git describe)
+  - export DOCKER_TAG="latest"
 
 before_script:
   - sleep 10
@@ -31,13 +31,15 @@ before_script:
 script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder /build-nba-service.sh install-service
 
 after_success:
-  - git clone https://github.com/AtzeDeVries/docker-nba-api
-  - cd docker-nba-api
+  - git clone https://github.com/AtzeDeVries/docker-nba-etl
+  - cd docker-nba-etl
   - cp -fr ~/payload/* ./
+  - echo $DOCKER_TAG > version
   - git add *
-  - git commit -a -m 'master/latest automatich travis ci build'
-  - docker build -t atzedevries/docker-nba-api:latest ./
+  - git commit -a -m 'automatic travis ci build'
+  - git push
+  - docker build -t atzedevries/docker-nba-etl:$DOCKER_TAG ./
   - docker login -u atzedevries -p $DOCKER_PASS
-  - docker tag atzedevries/docker-nba-api:latest atzedevries/docker-nba-api:latest
-  - docker push atzedevries/docker-nba-api:latest
-  - docker lougout
+  - docker tag atzedevries/docker-nba-etl:$DOCKER_TAG atzedevries/docker-nba-etl:$DOCKER_TAG
+  - docker push atzedevries/docker-nba-etl:$DOCKER_TAG
+  - docker logout
