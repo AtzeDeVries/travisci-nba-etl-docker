@@ -25,7 +25,7 @@ before_script:
   - docker exec es curl localhost:9200
   - cd ~
 
-script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder /build-nba-service.sh install-etl-module
+script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder sh /build-nba-service.sh install-etl-module
 
 after_success:
   - git clone https://github.com/AtzeDeVries/docker-nba-etl
