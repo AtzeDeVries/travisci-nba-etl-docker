@@ -40,3 +40,4 @@ after_success:
   - docker login -u atzedevries -p $DOCKER_PASS
   - docker tag atzedevries/docker-nba-api:latest atzedevries/docker-nba-api:latest
   - docker push atzedevries/docker-nba-api:latest
+  - docker lougout
