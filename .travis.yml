@@ -24,17 +24,19 @@ before_script:
   - docker exec es curl localhost:9200
   - cd ~
 
-script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-service
+script: docker run --rm -v $(pwd)/payload:/payload --env-file env.file --link es:es atzedevries/api-builder /build-nba-service.sh es5 install-etl-module
 
 after_success:
-  - git clone https://github.com/AtzeDeVries/docker-nba-api
-  - cd docker-nba-api
+  - git clone https://github.com/AtzeDeVries/docker-nba-etl
+  - cd docker-nba-etl
   - git checkout -b $DOCKER_TAG
   - cp -fr ~/payload/* ./
+  - echo $DOCKER_TAG > version
   - git add *
   - git commit -a -m 'automatich travis ci build'
   - git push -u origin $DOCKER_TAG
-  - docker build -t atzedevries/docker-nba-api:$DOCKER_TAG ./
+  - docker build -t atzedevries/docker-nba-etl:$DOCKER_TAG ./
   - docker login -u atzedevries -p $DOCKER_PASS
-  - docker tag atzedevries/docker-nba-api:$DOCKER_TAG atzedevries/docker-nba-api:$DOCKER_TAG
-  - docker push atzedevries/docker-nba-api:$DOCKER_TAG
+  - docker tag atzedevries/docker-nba-etl:$DOCKER_TAG atzedevries/docker-nba-etl:$DOCKER_TAG
+  - docker push atzedevries/docker-nba-etl:$DOCKER_TAG
+  - docker logout
