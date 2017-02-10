@@ -28,9 +28,8 @@ before_script:
   - docker exec es curl localhost:9200
   - cd  ~
 
-script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder /build-nba-service.sh install-service
-
-after_success:
+script:
+  - docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder /build-nba-service.sh install-etl-module
   - git clone https://github.com/AtzeDeVries/docker-nba-etl
   - cd docker-nba-etl
   - cp -fr ~/payload/* ./
@@ -39,6 +38,8 @@ after_success:
   - git commit -a -m 'automatic travis ci build'
   - git push
   - docker build -t atzedevries/docker-nba-etl:$DOCKER_TAG ./
+
+after_success:
   - docker login -u atzedevries -p $DOCKER_PASS
   - docker tag atzedevries/docker-nba-etl:$DOCKER_TAG atzedevries/docker-nba-etl:$DOCKER_TAG
   - docker push atzedevries/docker-nba-etl:$DOCKER_TAG
