@@ -1,2 +1,2 @@
 # travisci-nba-api-docker
-build api and commits it to docker hub
+build api and commits it to docker hub.
