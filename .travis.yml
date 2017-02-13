@@ -23,20 +23,20 @@ before_script:
   - sleep 10
   - docker logs es
   - docker exec es curl localhost:9200
-  - cd ~
+  - cd  ~
 
-script: docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder sh /build-nba-service.sh install-etl-module
+script:
+  - docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder sh /build-nba-service.sh install-etl-module
+  - git clone -b master --single-branch https://github.com/AtzeDeVries/docker-nba-etl
+  - cd docker-nba-etl
+  # - git checkout -b $DOCKER_TAG
+  - cp -fr ~/payload/* ./
+  # - git add *
+  # - git commit -a -m 'automatic travis ci build'
+  # - git push --set-upstream origin $DOCKER_TAG
+  - docker build -t atzedevries/docker-nba-etl:$DOCKER_TAG ./
 
 after_success:
-  - git clone https://github.com/AtzeDeVries/docker-nba-etl
-  - cd docker-nba-etl
-  - git checkout -b $DOCKER_TAG
-  - cp -fr ~/payload/* ./
-  - echo $DOCKER_TAG > version
-  - git add *
-  - git commit -a -m 'automatic travis ci build'
-  - git push -u origin $DOCKER_TAG
-  - docker build -t atzedevries/docker-nba-etl:$DOCKER_TAG ./
   - docker login -u atzedevries -p $DOCKER_PASS
   - docker tag atzedevries/docker-nba-etl:$DOCKER_TAG atzedevries/docker-nba-etl:$DOCKER_TAG
   - docker push atzedevries/docker-nba-etl:$DOCKER_TAG
