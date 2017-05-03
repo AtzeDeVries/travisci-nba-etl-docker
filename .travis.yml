@@ -29,6 +29,7 @@ script:
   - docker run --rm -v ~/payload:/payload -v ~/naturalis_data_api:/source --link es:es atzedevries/api-builder sh /build-nba-service.sh install-etl-module
   - git clone -b master --single-branch https://github.com/AtzeDeVries/docker-nba-etl
   - cd docker-nba-etl
+  - echo $DOCKER_TAG > version
   # - git checkout -b $DOCKER_TAG
   - cp -fr ~/payload/* ./
   # - git add *
