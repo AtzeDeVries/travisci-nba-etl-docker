@@ -34,6 +34,8 @@ script:
   - cd docker-nba-etl
   - echo $DOCKER_TAG > version
   # - git checkout -b $DOCKER_TAG
+  - rm -fr ~/payload/software/conf/thematic-search
+  - git clone https://github.com/naturalis/nba-brondata-bijzcol ~/payload/software/conf/thematic-search
   - cp -fr ~/payload/* ./
   # - git add *
   # - git commit -a -m 'automatic travis ci build'
